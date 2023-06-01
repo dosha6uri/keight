@@ -1,0 +1,54 @@
+<h1>検索結果</h1>
+
+    <% if @ans.empty? == false && @ans != nil %>
+        <% @ans.each do |an| %>
+            <% if @range == 'User' %>
+                <div class="post">
+                    <%= link_to("#{an.username}", "/users/#{an.id}") %>
+                </div>
+            <% elsif @range == 'Comm' %>
+                    <div class="post">
+                        <%= link_to("#{an.comm_name}", "/communities/show/#{an.id}") %>
+                        <% if community.intro != nil%>
+                            <%= community.intro %>
+                        <% end %>
+                    </div>
+            <% elsif @range == 'Post' %>
+                <%  submitter = User.find_by(id: an.submitter)
+                    sname = (submitter != nil) ? submitter.username : 'Anonnymous'
+                    cs = Community.find_by(id: an[:comm_id]) 
+                    p_adr = (cs != nil) ? cs[:comm_name] : '///' 
+                    c = (cs != nil) ? cs : nil
+
+                    if  c == nil 
+                    elsif c[:opened] == true %>
+                        <div class="post">
+                            <p class="top-line"><%= link_to(sname, "/users/#{an.submitter}") + ' : ' + an.created_at.to_s + '---' + p_adr.to_s %>
+                            <% if an.submitter == current_user.id %>
+                                <%= link_to("編集", "/posts/edit/#{an.id}") %>
+                                <%= link_to("削除", "/posts/delete/#{an.id}", {method: "post"})%>
+                            <% end %></p><br />
+                            <%= an.body %>
+                            <% if an.additional_content != nil %>
+                                <p class="bottom-line"><%= link_to("ミニブログを見る", "/posts/show/#{an.id}") %></p>
+                            <% end %>
+                        </div>
+                    <% elsif Joining.where(comm_id: an.comm_id).where(user_id: current_user.id).empty? == false %>
+                        <div class="post">
+                            <p class="top-line"><%= link_to(sname, "/users/#{an.submitter}") + ' : ' + an.created_at.to_s + '---' + p_adr.to_s %>
+                                    <% if an.submitter == current_user.id %>
+                                        <%= link_to("編集", "/posts/edit/#{an.id}") %>
+                                       <%= link_to("削除", "/posts/delete/#{an.id}", {method: "post"})%>
+                                    <% end %>
+                            </p><br />
+                            <%= an.body %>
+                            <% if an.additional_content != nil %>
+                                <p class="bottom-line"><%= link_to("ミニブログを見る", "/posts/show/#{an.id}") %></p>
+                            <% end %>
+                        </div>
+                    <% end %>
+            <% end %>
+        <% end %>
+    <% else %>
+        <h2>該当するものはありませんでした</h2>
+    <% end %>

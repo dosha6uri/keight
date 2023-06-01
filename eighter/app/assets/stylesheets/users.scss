@@ -1,0 +1,37 @@
+// Place all the styles related to the users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.top-line{
+    border-bottom: 1px solid rgb(240, 234, 228);
+}
+
+.link{
+    text-align: right;
+}
+
+.bottom-line{
+    border-top: 1px solid rgb(240, 234, 228);
+    text-align: right;
+}
+
+.post{
+    padding: 20px 30px;
+    margin: 0px;
+    background-color: rgb(255, 253, 251);
+    box-shadow: 0 2px 6px rgb(187, 169, 152);
+}
+
+.menu{
+    background-color: rgb(152, 200, 237);
+}
+
+.links{
+    display: flex;
+}
+
+.tab{
+    text-align: center;
+    border: 3px solid rgb(240, 234, 228);
+}
+

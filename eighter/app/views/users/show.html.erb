@@ -1,0 +1,71 @@
+<h1>MyPage for <%= @user.username %></h1>
+
+    
+        <%= form_with model: Post.new do |f| %>
+                <%= f.text_area :body, placeholder:"Add your comment" %><br />
+                <%= f.hidden_field :id, :value => @user.id %>
+                <%= f.hidden_field :comm_id, :value => 0 %>
+                <%= f.submit 'submit'%>
+            <% end %>
+        
+    
+        <% if @posts != nil 
+        if @communities != nil %>
+            <ul class="links">
+                <li class="tab"><%= link_to "すべての投稿", "/users/#{@user.id}" %></li>
+                <% @communities.delete_if {|community|
+                    community.opened == false && Joining.where(comm_id: community.id).where(user_id: current_user.id).empty? == false
+                } %>
+
+                <%  @communities.each {|community| %>
+                    <li class="tab"><%= link_to "#{community.comm_name}", "/users/#{@user.username}/#{community.comm_name}" %></li>
+            <%  } 
+                end%>
+            </ul>
+            <% l = @posts.length; @posts.each_with_index {|post, i|
+                
+                submitter = User.find_by(id: post.submitter)
+                sname = (submitter != nil) ? submitter.username : 'Anonnymous'
+                cs = Community.find_by(id: post[:comm_id]) 
+                p_adr = (cs != nil) ? cs[:comm_name] : '///' 
+                c = (cs != nil) ? cs : nil
+
+                    if  c == nil 
+                    elsif c[:opened] == true %>
+                        <div class="post">
+                            <p class="top-line"><%= link_to(sname, "/users/#{post.submitter}") + ' : ' + post.created_at.to_s + '---' %>
+                            <% if cs != nil %>
+                               <%= link_to(p_adr, "/communities/show/#{cs.id}") %>
+                            <% else %>
+                                <%= p_adr.to_s %>
+                            <% end %>
+                            <% if post.submitter == current_user.id %>
+                                <%= link_to("編集", "/posts/edit/#{post.id}") %>
+                                <%= link_to("削除", "/posts/delete/#{post.id}", {method: "post"})%>
+                            <% end %></p><br />
+                            <%= post.body %>
+                            <% if post.additional_content != nil %>
+                                <p class="bottom-line"><%= link_to("ミニブログを見る", "/posts/show/#{post.id}") %></p>
+                            <% end %>
+                        </div>
+                    <% elsif Joining.where(comm_id: post[:comm_id]).where(user_id: current_user.id).empty? == false %>
+                        <div class="post">
+                            <p class="top-line"><%= link_to(sname, "/users/#{post.submitter}") + ' : ' + post.created_at.to_s + '---' %>
+                            <% if cs != nil %>
+                               <%= link_to(p_adr, "/communities/show/#{cs.id}") %>
+                            <% else %>
+                                <%= p_adr.to_s %>
+                            <% end %>
+                                    <% if post.submitter == current_user.id %>
+                                        <%= link_to("編集", "/posts/edit/#{post.id}") %>
+                                       <%= link_to("削除", "/posts/delete/#{post.id}", {method: "post"})%>
+                                    <% end %>
+                            </p><br />
+                            <%= post.body %>
+                            <% if post.additional_content != nil %>
+                                <p class="bottom-line"><%= link_to("ミニブログを見る", "/posts/show/#{post.id}") %></p>
+                            <% end %>
+                        </div>
+                    <% end %>
+                <% } %>
+        <% end %>

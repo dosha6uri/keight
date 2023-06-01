@@ -1,0 +1,15 @@
+<h1>新たなコミュニティを作成します</h1>
+<%= form_tag("/communities/create") do %>
+  
+      <label>コミュニティ名<br /><input type="text" name="comm_name"></label><br />
+      <label>コミュニティ紹介文<br /><input type="text" name="intro"></label><br />
+      <label>公開<select " name="opened">
+                 <option value="true">する</option>
+                 <option value="false">しない</option>
+                 </select>
+      </label >
+    <div class="actions">
+      <input type="submit" value="確定">
+    </div>
+    
+<% end %>

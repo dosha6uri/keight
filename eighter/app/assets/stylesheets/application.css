@@ -1,0 +1,96 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+ body{
+   background-color: rgb(247, 243, 239);
+    position: relative;
+    top: 0%;
+    left: 0%;
+ }
+
+.header{
+   position: fixed;
+   top: 0%;
+   background-color: rgb(247, 243, 239);
+   width: 23%;
+   height: 100%;
+   box-shadow: 0 0px 4px rgb(187, 169, 152);
+}
+
+.search_form{
+   position: fixed;
+   top: 0%;
+   left: 73%;
+   width: 27%;
+   height: 100%;
+   background-color: rgb(247, 243, 239);
+}
+
+ .temp{
+    background-color: rgb(247, 243, 239);
+    color: navy;
+ }
+
+ .main{
+    position: absolute;
+    top: 0%;
+    left: 23.25%;
+    width: 50%;
+    background-color: rgb(247, 243, 239);
+    color: navy;
+    box-shadow: 0 2px 6px rgb(187, 169, 152);
+ }
+ 
+ h1{
+    background-color: rgb(152, 200, 237);
+    color: rgb(229,228,96);
+    padding: 20px 30px;
+    margin: 0px;
+}
+
+h2{
+   background-color: rgb(247, 243, 239);
+   padding: 20px 30px;
+   margin: 0px;
+}
+
+.notice{
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    color: red;
+}
+
+form{
+   padding: 20px 30px;
+   margin: 0px;
+   background-color: rgb(247, 243, 239);
+   box-shadow: 0 2px 6px rgb(187, 169, 152);
+}
+
+ul{
+   text-align: center;
+    padding: 10px;
+    margin: 0px;
+ }
+
+ li{
+    list-style: none;
+    padding-right:  10px;
+    padding-bottom: 5px;
+    margin: 0px;
+    font-size: 20px;
+ }

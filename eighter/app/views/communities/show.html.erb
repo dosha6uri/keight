@@ -1,0 +1,52 @@
+
+
+    <% if @u %>
+    
+        <h1 class="title"><%= @community.comm_name %>
+            <% if @community.create_user_id == current_user.id %>
+                <%= link_to("設定", "/communities/edit/#{@community.id}") %>
+            <% end %>
+        </h1> 
+        <%= form_with model: Post.new do |f| %>
+            <%= f.text_area :body, placeholder:"Add your comment" %><br />  
+            <%= f.hidden_field :id, :value => @user.id %>
+            <%= f.hidden_field :comm_id, :value => params[:comm_id] %>
+            <%= f.submit 'submit'%>
+        <% end %>
+    
+        <% if @posts != nil %>
+            <% l = @posts.length; @posts.each_with_index {|post, i| 
+                submitter = User.find_by(id: post.submitter)
+                comm = Community.find_by(id: post.comm_id)
+                sname = (submitter != nil) ? submitter.username : 'Anonnymous' %>
+                <div class="post">
+                    <p class="top-line">
+                        <%= link_to(sname, "/users/#{post.submitter}") + ' : ' + post.created_at.to_s %>
+                        <%= link_to(comm.comm_name, "/communities/show/#{post.comm_id}")%>
+                        <% if post.submitter == current_user.id %>
+                                <%= link_to("編集", "/posts/edit/#{post.id}") %>
+                                <%= link_to("削除", "/posts/delete/#{post.id}", {method: "post"})%>
+                        <% end %>
+                    </p><br />
+                    <%= post.body %>
+                    <% if post.additional_content != nil %>
+                        <p class="bottom-line"><%= link_to("ミニブログを見る", "/posts/show/#{post.id}") %></p>
+                    <% end %>
+                </div>
+            <% } %>
+        <% end %>
+    <% else %>
+        <h1><%= @community.comm_name %>に参加しますか？</h1>
+        <% if @community.intro != nil %>
+            <div>
+                <h2>紹介文</h2>
+                <%= @community.intro %>
+            </div>
+        <% end %>
+        <%= form_with model: Joining.new do |f| %>
+            <%= f.hidden_field :user_id, :value => @user.id %>
+            <%= f.hidden_field :comm_id, :value => params[:comm_id] %>
+            <%= f.submit '参加する' %>
+        <% end %>
+    <% end %>
+    

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Eighter</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    
+      <div class="header">
+        <ul>
+      <% if user_signed_in? %>
+          <li><%= link_to 'log_out', destroy_user_session_path, method: :delete, class: "temp" %></li>
+          <li><%= link_to 'my page', "/users/#{current_user.id}", class: "temp" %></li>
+          <li><%= link_to 'ミニブログを書く', "/posts/miniblog" %></li>
+
+          <%  if Joining.where(user_id: current_user.id).empty? == false
+                joins = Joining.where(user_id: current_user.id)
+              else
+                joins = nil
+              end
+
+              if joins != nil %>
+                <li><select name="comm" onChange="location.href=value" class="temp">
+                      <option value="-">参加コミュニティ一覧</option>
+                      <% joins.each_with_index {|join,j|
+                         community = Community.find_by(id: join[:comm_id]) %>
+                        <option value=<%= "/communities/show/#{community.id}" %> ><%= community.comm_name %></option>
+                      <% } %>
+                    </select>
+                </li>
+              <% end %>
+              <li><%= link_to("コミュニティを作成する", "/communities/new") %></li>
+        </ul>
+        <div class="search_form">
+          <%= form_with url:'/searches', local: true, method: :get do |f| %>
+            <p><%= f.text_field :keyword %></p>
+            <p><%= f.select :range, options_for_select([["ユーザー名", 'User'],[ "コミュニティ名", 'Comm'], ["投稿",'Post']]) %></p>
+            <p><%= f.select :search_type, options_for_select([["完全一致", 'perfect'], ["部分一致", 'part']])%></p>
+            <%  if Joining.where(user_id: current_user.id).empty? == false
+                  joins = Joining.where(user_id: current_user.id)
+                else
+                  joins = nil
+                end
+
+              if joins != nil %>
+                <p>所属コミュニティ内検索:</p>
+                <% joins.each {|join| 
+                  comm = Community.find_by(id: join.comm_id) %>
+                  <%= f.label :comm_id, "#{comm.comm_name}", {value: :comm_id, style: "display: inline-block;"} %>
+                  <%= f.radio_button :comm_id, "#{comm.id}" %>
+                <% } %>
+              <% end %>
+            <%= f.submit "検索" %>
+          <% end %>
+        </div>
+      <% else %>
+            <ul>
+              <li><%= link_to 'sign up', new_user_registration_path, class: "temp" %></li>
+              <li><%= link_to 'login', new_user_session_path, class: "temp" %></li>
+            </ul>
+      <% end %>
+      </div>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+    
+    <div class="main"><%= yield %></div>
+    
+    
+
+  </body>
+</html>

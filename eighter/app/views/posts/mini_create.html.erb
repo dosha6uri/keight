@@ -1,0 +1,15 @@
+    <h1>ミニブログを書く</h1>
+        <h2>※フィード内にはタイトルのみ表示されます</h2>
+        <ul>
+            <%= form_with model: Post.new do |f| %>
+                <% if @joins != nil %>
+                    <li>投稿先<%= f.collection_select :comm_id, @community, :id, :comm_name %></li>
+                <% else %>
+                    <%= f.hidden_field :id, :value => @user.id %>
+                <% end %>
+                <li>タイトル<%= f.text_area :body, placeholder:"Add your title" %></li>
+                <li>内容<%= f.text_area :additional_content, placeholder:"Add your content" %></li>
+                <%= f.hidden_field :id, :value => @user.id %>
+                <%= f.submit 'submit'%>
+            <% end %>
+        </ul>

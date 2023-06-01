@@ -1,0 +1,14 @@
+<h1>編集</h1>
+    <p>元の投稿</p>
+        <%= @post.body %><br />
+        <% if @post.additional_content != nil %>
+            <%= @post.additional_content %><br />
+        <% end %>
+    <p>投稿編集</p>
+        <%= form_with url: "/posts/update/#{@post.id}" do |f| %>
+            <%= f.text_area :body, placeholder:"#{@post.body}" %>
+            <% if @post.additional_content != nil %>
+                <%= f.text_area :additional_content, placeholder:"#{@post.additional_content}" %>
+            <% end %>
+            <%= f.submit '編集' %>
+        <% end %>

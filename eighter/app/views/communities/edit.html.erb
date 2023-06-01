@@ -1,0 +1,26 @@
+<h1>コミュニティ設定編集</h1>
+    <%= form_tag("/communities/update/#{@community.id}") do %>
+  
+      <label>コミュニティ名<br /><input type="text" name="comm_name" value="<%=@community.comm_name %>"></label><br />
+      <% if @i != nil %>
+        <label>コミュニティ紹介文<br /><input type="text" name="intro" value="<%= @i %>"></label><br />
+      <% else %>
+        <label>コミュニティ紹介文<br /><input type="text" name="intro"></label><br />
+      <% end %>
+    <br />
+      <label>公開<select " name="opened">
+                 <option value="true">する</option>
+                 <option value="false">しない</option>
+                 </select>
+      </label >
+    <br />
+    <div class="actions">
+      <input type="submit" value="確定">
+    </div>
+
+    <br />
+    <div>
+        <%= link_to("削除する","/communities/delete/#{@community.id}", {method: "post"}) %>
+    </div>
+    
+<% end %>
